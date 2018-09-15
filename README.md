@@ -28,6 +28,12 @@ require 'capistrano/deploy' # This should be required in advance
 require 'capistrano/lazy_cleanup'
 ```
 
+## What exactly does the `offloading` mean?
+
+On heavy application, it takes time to execute `deploy:cleanup` and `deploy:cleanup_rollback`. This is mainly due to heavy I/O caused by `rm -rf`. The kernel visits and unlink all the directories and files in old release paths. This costs heavy I/O as well as CPU cost.
+
+This gem replaces `rm -rf` with `mktemp` and `mv`. The old release paths are moved to temporary directory. Capistrano and the kernel should handle only the top directory on deployment. After the deployment, files in temporary directory will be eventually cleaned up by low-priorty processes provided by OS.
+
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
