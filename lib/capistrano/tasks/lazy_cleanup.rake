@@ -24,7 +24,7 @@ namespace :capistrano do
             debug t(:no_current_release, host: host.to_s)
           end
           if directories.any?
-            temp_dir = capture(:mktemp)
+            temp_dir = capture(:mktemp, '-d')
             execute :mv, *directories, temp_dir
           else
             info t(:no_old_releases, host: host.to_s, keep_releases: fetch(:keep_releases))
@@ -42,7 +42,7 @@ namespace :capistrano do
           execute :tar, "-czf",
                   deploy_path.join("rolled-back-release-#{last_release}.tar.gz"),
                   last_release_path
-          temp_dir = capture(:mktemp)
+          temp_dir = capture(:mktemp, '-d')
           execute :mv, last_release_path, temp_dir
         else
           debug "Last release is the current release, skip cleanup_rollback."
