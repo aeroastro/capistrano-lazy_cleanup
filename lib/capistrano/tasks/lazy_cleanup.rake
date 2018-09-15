@@ -51,3 +51,16 @@ namespace :capistrano do
     end
   end
 end
+
+Rake::Task['deploy:cleanup'].clear_actions
+Rake::Task['deploy:cleanup_rollback'].clear_actions
+
+namespace :deploy do
+  task :cleanup do
+    invoke "capistrano:lazy_cleanup:cleanup"
+  end
+
+  task :cleanup_rollback do
+    invoke "capistrano:lazy_cleanup:cleanup_rollback"
+  end
+end
