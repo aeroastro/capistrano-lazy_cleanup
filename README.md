@@ -22,6 +22,8 @@ Or install it yourself as:
 ## Usage
 
 ```ruby
+require 'capistrano/deploy' # This should be required in advance
+
 # Capfile
 require 'capistrano/lazy_cleanup'
 ```
