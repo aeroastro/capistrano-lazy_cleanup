@@ -1,4 +1,10 @@
 require "bundler/setup"
+
+require "capistrano/all"
+
+require "capistrano/setup"
+require "capistrano/deploy"
+
 require "capistrano/lazy_cleanup"
 
 RSpec.configure do |config|
