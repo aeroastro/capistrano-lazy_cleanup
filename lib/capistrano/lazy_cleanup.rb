@@ -1,4 +1,5 @@
 require "capistrano/lazy_cleanup/version"
+require "capistrano/lazy_cleanup/defaults"
 
 module Capistrano
   module LazyCleanup
