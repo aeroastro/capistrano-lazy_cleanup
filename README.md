@@ -21,11 +21,26 @@ Or install it yourself as:
 
 ## Usage
 
+Capfile
+
 ```ruby
-require 'capistrano/deploy' # This should be required in advance
+# Load DSL and set up stages
+require "capistrano/setup"
+
+# Include default deployment tasks
+require "capistrano/deploy" # This should be required in advance
 
 # Capfile
 require 'capistrano/lazy_cleanup'
+```
+
+## Configuration
+
+Capistrano::LazyCleanup can be used out of the box, but you can further customize the configuration at your `deploy.rb`.
+
+```ruby
+# Defaults to "#{fetch(:tmp_dir, '/tmp')}/capistrano-lazy_cleanup_old_releases.XXXXXXXXXX"
+set :lazy_cleanup_old_releases_path_template, "/tmp/my-old-releases.XXXXXXXXXX"
 ```
 
 ## What exactly does the `offloading` mean?
