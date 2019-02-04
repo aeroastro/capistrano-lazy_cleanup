@@ -21,11 +21,26 @@ Or install it yourself as:
 
 ## Usage
 
+Capfile
+
 ```ruby
-require 'capistrano/deploy' # This should be required in advance
+# Load DSL and set up stages
+require "capistrano/setup"
+
+# Include default deployment tasks
+require "capistrano/deploy" # This should be required in advance
 
 # Capfile
 require 'capistrano/lazy_cleanup'
+```
+
+## Configuration
+
+Capistrano::LazyCleanup can be used out of the box, but you can further customize the configuration at your `deploy.rb`.
+
+```ruby
+# Defaults to "#{fetch(:tmp_dir)}/cap-lazy-cleanup-#{fetch(:application)}.XXXXXXXXXX"
+set :lazy_cleanup_old_releases_path_template, "/tmp/my-old-releases.XXXXXXXXXX"
 ```
 
 ## What exactly does the `offloading` mean?
@@ -33,6 +48,10 @@ require 'capistrano/lazy_cleanup'
 On heavy application, it takes time to execute `deploy:cleanup` and `deploy:cleanup_rollback`. This is mainly due to heavy I/O caused by `rm -rf`. The kernel visits and unlink all the directories and files in old release paths. This costs heavy I/O as well as CPU cost.
 
 This gem replaces `rm -rf` with `mktemp` and `mv`. The old release paths are moved to temporary directory. Capistrano and the kernel should handle only the top directory on deployment. After the deployment, files in temporary directory will be eventually cleaned up by low-priorty processes provided by OS.
+
+## Caveats
+
+This gem heavily uses `fetch(:tmp_dir)` as the temporary directory. Therefore, when the combination of deployment size and frequency overwhelms cleanup cycle of your OS, you might encounter disk full issue. You can mitigate this by specifying additional fast cleanup rule on `lazy_cleanup_old_releases_path_template`. (e.g. `tmpwatch -umc 1 /tmp/cap-lazy-cleanup*`)
 
 ## Development
 
