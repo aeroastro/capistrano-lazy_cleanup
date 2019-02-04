@@ -39,7 +39,7 @@ require 'capistrano/lazy_cleanup'
 Capistrano::LazyCleanup can be used out of the box, but you can further customize the configuration at your `deploy.rb`.
 
 ```ruby
-# Defaults to "#{fetch(:tmp_dir, '/tmp')}/capistrano-lazy_cleanup_old_releases.XXXXXXXXXX"
+# Defaults to "#{fetch(:tmp_dir)}/cap-lazy-cleanup-#{fetch(:application)}.XXXXXXXXXX"
 set :lazy_cleanup_old_releases_path_template, "/tmp/my-old-releases.XXXXXXXXXX"
 ```
 
