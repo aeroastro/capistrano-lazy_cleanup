@@ -49,6 +49,10 @@ On heavy application, it takes time to execute `deploy:cleanup` and `deploy:clea
 
 This gem replaces `rm -rf` with `mktemp` and `mv`. The old release paths are moved to temporary directory. Capistrano and the kernel should handle only the top directory on deployment. After the deployment, files in temporary directory will be eventually cleaned up by low-priorty processes provided by OS.
 
+## Caveats
+
+This gem heavily uses `fetch(:tmp_dir)` as the temporary directory. Therefore, when the combination of deployment size and frequency overwhelms cleanup cycle of your OS, you might encounter disk full issue. You can mitigate this by specifying additional fast cleanup rule on `lazy_cleanup_old_releases_path_template`. (e.g. `tmpwatch -umc 1 /tmp/cap-lazy-cleanup*`)
+
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
